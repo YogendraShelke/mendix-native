@@ -2,7 +2,7 @@
 //  Copyright (c) Mendix, Inc. All rights reserved.
 //
 #import "ReactNative.h"
-#import "react-native-splash-screen/RNSplashScreen.h"
+#import "RNSplashScreen.h"
 
 @interface MendixSplashScreen : NSObject<RCTBridgeModule>
 @end

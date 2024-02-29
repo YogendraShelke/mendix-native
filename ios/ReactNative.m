@@ -6,7 +6,7 @@
 #import <React/RCTReloadCommand.h>
 #import <React/RCTUtils.h>
 #import <IQKeyboardManager/IQKeyboardManager.h>
-#import "RNCAsyncStorage/RNCAsyncStorage.h"
+#import "RNCAsyncStorage.h"
 #import "AppPreferences.h"
 #import "MendixReactWindow.h"
 #import "MxConfiguration.h"

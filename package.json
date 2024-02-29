@@ -79,7 +79,9 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@react-native-community/async-storage": "*",
+    "react-native-splash-screen": "*"
   },
   "packageManager": "yarn@3.6.1",
   "jest": {
