@@ -19,5 +19,5 @@ runs:
       shell: bash
 
     - name: Copy iOS Library to Shared Directory
-      run: mkdir -p ${{ github.workspace }}/shared/libs/ios && cp ./ios/build/mendixnative/mendixnative.xcframework ${{ github.workspace }}/shared/libs/ios/mendixnative.xcframework
+      run: mkdir -p ${{ github.workspace }}/shared/libs/ios && cp -R ./ios/build/mendixnative/mendixnative.xcframework ${{ github.workspace }}/shared/libs/ios/mendixnative.xcframework
       shell: bash
