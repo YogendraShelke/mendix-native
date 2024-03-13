@@ -32,7 +32,7 @@
     "clean": "del-cli android/build lib",
     "prepare": "bob build",
     "release": "release-it",
-    "postinstall": "patch-package --use-yarn"
+    "postinstall": "patch-package"
   },
   "keywords": [
     "react-native",
