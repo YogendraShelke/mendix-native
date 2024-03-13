@@ -28,6 +28,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.env.local
+ios/Pods
 
 # Android/IJ
 #
@@ -39,13 +41,6 @@ project.xcworkspace
 .settings
 local.properties
 android.iml
-
-# Cocoapods
-#
-example/ios/Pods
-
-# Ruby
-example/vendor/
 
 # node.js
 #
