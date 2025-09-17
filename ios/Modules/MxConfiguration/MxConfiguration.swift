@@ -1,0 +1,99 @@
+//
+//  MxConfiguration.swift
+//  MendixNative
+//
+//  Copyright (c) Mendix, Inc. All rights reserved.
+//
+
+import Foundation
+import React
+
+@objc public class MxConfiguration: NSObject {
+    
+    /**
+     * Side note for 11: I've bumped the nativeBinaryVersion from 12 to 30,
+     * because there needs to be version increment space for Mx 10.24.
+     * You can remove this comment when the next version is released.
+     *
+     * Increment nativeBinaryVersion to 30 for OP-SQlite database migration
+     */
+    private static let nativeBinaryVersion: Int = 30
+    private static let defaultDatabaseName = "default"
+    private static let defaultFilesDirectoryName = "files/default"
+    
+    private static var _runtimeUrl: URL?
+    private static var _appName: String?
+    private static var _databaseName: String?
+    private static var _filesDirectoryName: String?
+    private static var _warningsFilter: WarningsFilter = .all
+    private static var _isDeveloperApp: Bool = false
+    private static var _appSessionId: String?
+    
+    // MARK: - Static Getters and Setters
+    
+    @objc static var runtimeUrl: URL? {
+        get { return _runtimeUrl }
+        set { _runtimeUrl = newValue }
+    }
+    
+    @objc static var appName: String? {
+        get { return _appName }
+        set { _appName = newValue }
+    }
+    
+    @objc static var appSessionId: String? {
+        get { return _appSessionId }
+        set { _appSessionId = newValue }
+    }
+    
+    @objc static var isDeveloperApp: Bool {
+        get { return _isDeveloperApp }
+        set { _isDeveloperApp = newValue }
+    }
+    
+    @objc static var databaseName: String {
+        get { return _databaseName ?? defaultDatabaseName }
+        set { _databaseName = newValue }
+    }
+    
+    @objc static var filesDirectoryName: String {
+        get { return _filesDirectoryName ?? defaultFilesDirectoryName }
+        set { _filesDirectoryName = newValue }
+    }
+    
+    @objc static var warningsFilter: WarningsFilter {
+        get { return _warningsFilter }
+        set { _warningsFilter = newValue }
+    }
+    
+    // MARK: - React Native Module Setup
+    
+    @objc static func requiresMainQueueSetup() -> Bool {
+        return true
+    }
+    
+    @objc func constants() -> [String: Any] {
+        guard let runtimeUrl = MxConfiguration.runtimeUrl else {
+            let exception = NSException(
+                name: NSExceptionName("RUNTIME_URL_MISSING"),
+                reason: "Runtime URL was not set prior to launch.",
+                userInfo: nil
+            )
+            exception.raise()
+            return [:]
+        }
+        
+        return [
+            "RUNTIME_URL": runtimeUrl.absoluteString,
+            "APP_NAME": MxConfiguration.appName ?? NSNull(),
+            "DATABASE_NAME": MxConfiguration.databaseName,
+            "FILES_DIRECTORY_NAME": MxConfiguration.filesDirectoryName,
+            "WARNINGS_FILTER_LEVEL": MxConfiguration.warningsFilter.stringValue,
+            "OTA_MANIFEST_PATH": OtaHelpers.getOtaManifestFilepath(),
+            "IS_DEVELOPER_APP": NSNumber(value: MxConfiguration.isDeveloperApp),
+            "NATIVE_DEPENDENCIES": OtaHelpers.getNativeDependencies(),
+            "NATIVE_BINARY_VERSION": NSNumber(value: MxConfiguration.nativeBinaryVersion),
+            "APP_SESSION_ID": MxConfiguration.appSessionId ?? NSNull()
+        ]
+    }
+}
