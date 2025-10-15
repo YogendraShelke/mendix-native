@@ -5,21 +5,16 @@ import ReactAppDependencyProvider
 
 open class ReactAppProvider: RCTAppDelegate {
     
-    var reactRootViewName: String = "App"
+    public static let defaultName = "App"
     
-    public func setUpProvider(moduleName: String = "App", reactRootViewName: String = "App") {
+    var reactRootViewName: String = defaultName
+    
+    public func setUpProvider(moduleName: String = ReactAppProvider.defaultName, reactRootViewName: String = ReactAppProvider.defaultName) {
         self.moduleName = moduleName
         self.reactRootViewName = reactRootViewName
         automaticallyLoadReactNativeWindow = false
         dependencyProvider = RCTAppDependencyProvider()
-        initialProps = [:]
-        window = UIApplication
-            .shared
-            .connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?
-            .windows
-            .first { $0.isKeyWindow } ?? UIWindow(frame: UIScreen.main.bounds)
+        window = MendixReactWindow(frame: UIScreen.main.bounds)
     }
     
     public override func sourceURL(for bridge: RCTBridge) -> URL? {
@@ -53,8 +48,8 @@ open class ReactAppProvider: RCTAppDelegate {
         return UIApplication.shared.delegate as? ReactAppProvider
     }
     
-    public func isReactAppActive() -> Bool {
-        return bridge != nil
+    public static func isReactAppActive() -> Bool {
+        return unsafeBridge != nil
     }
     
     public func changeRoot(to controller: UIViewController) {
@@ -64,5 +59,17 @@ open class ReactAppProvider: RCTAppDelegate {
     
     public var rootView: UIView? {
         return window.rootViewController?.view
+    }
+    
+    public static func getModule<T: NSObject>(type: T.Type) -> T? {
+        return unsafeBridge?.moduleRegistry.module(for: type.self) as? T
+    }
+        
+    public static func getModule(name: String) -> Any? {
+        return unsafeBridge?.moduleRegistry.module(forName: name)
+    }
+    
+    public static var unsafeBridge: RCTBridge? {
+        return RCTBridge.current()
     }
 }

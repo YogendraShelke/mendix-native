@@ -20,7 +20,7 @@ enum UnsafeMxFunction {
     }
     
     var target: NSObject? {
-        return ReactHostManager.module(name: className) as? NSObject
+        return ReactAppProvider.getModule(name: className) as? NSObject
     }
     
     func perform() {

@@ -11,11 +11,11 @@ public class DevHelper {
     }
     
     public static var devSettings: RCTDevSettings? {
-        return ReactHostManager.module(type: RCTDevSettings.self)
+        return ReactAppProvider.getModule(type: RCTDevSettings.self)
     }
     
     public static var devMenu: RCTDevMenu? {
-        return ReactHostManager.module(type: RCTDevMenu.self)
+        return ReactAppProvider.getModule(type: RCTDevMenu.self)
     }
     
     public static func setDebugMode(enabled: Bool) {

@@ -140,7 +140,7 @@ open class ReactNative: NSObject, RCTReloadListener {
     }
     
     @objc private func appReloadAction(_ gestureRecognizer: UITapGestureRecognizer) {
-        if gestureRecognizer.state == .ended && ReactAppProvider.shared()?.isReactAppActive() == true {
+        if gestureRecognizer.state == .ended && ReactAppProvider.isReactAppActive() == true {
             reloadWithState()
         }
     }
