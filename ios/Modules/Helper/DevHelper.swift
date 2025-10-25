@@ -22,4 +22,12 @@ public class DevHelper {
         AppPreferences.remoteDebuggingEnabled = enabled
         devSettings?.isDebuggingRemotely = enabled
     }
+    
+    public static func hideDevLoadingView() {
+        devLoadingView?.hide()
+    }
+    
+    public static var devLoadingView: RCTDevLoadingView? {
+        return ReactAppProvider.getModule(type: RCTDevLoadingView.self)
+    }
 }
