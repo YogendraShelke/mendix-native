@@ -2494,6 +2494,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@op-engineering/op-sqlite@patch:@op-engineering/op-sqlite@npm%3A15.0.7#./.yarn/patches/@op-engineering-op-sqlite-npm-15.0.7-39fbf4933a.patch::locator=mendix-native%40workspace%3A.":
+  version: 15.0.7
+  resolution: "@op-engineering/op-sqlite@patch:@op-engineering/op-sqlite@npm%3A15.0.7#./.yarn/patches/@op-engineering-op-sqlite-npm-15.0.7-39fbf4933a.patch::version=15.0.7&hash=2e90b0&locator=mendix-native%40workspace%3A."
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 9c9d3148f4ad7d5025a5d6df9c2c82996b10270936f788a5486ab1df26307ab9b88130f00472f32bd6e7a13793312be04f3e60a0ccbd1bd88ec90b3fb4a8163e
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
