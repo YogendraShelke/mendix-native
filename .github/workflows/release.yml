@@ -2,6 +2,9 @@ name: Release Package
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - commonjs  # Testing only - remove before merging to main
 
 jobs:
   build-and-release:
