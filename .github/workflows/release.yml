@@ -33,7 +33,7 @@ jobs:
       - name: Pack library (mendix-native@[tag])
         run: |
           TAG=${GITHUB_REF_NAME}
-          FILENAME="mendix-native@${TAG}.tgz"
+          FILENAME="${TAG}.tgz"
           yarn pack --filename "$FILENAME"
           echo "PACKAGE_FILE=$FILENAME" >> $GITHUB_ENV
 
