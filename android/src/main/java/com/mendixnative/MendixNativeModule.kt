@@ -169,13 +169,13 @@ class MendixNativeModule(reactContext: ReactApplicationContext) : NativeMendixNa
     NativeErrorHandler(reactApplicationContext).handle(message, stackTrace)
   }
 
-  override fun navigationModeIsNavigationBarActive(): Boolean {
-    return NavigationModeModule(reactApplicationContext).isNavigationBarActive()
-  }
+    override fun navigationModeIsNavigationBarActive(): Boolean {
+        return NavigationModeModule(reactApplicationContext).isNavigationBarActive()
+    }
 
-  override fun navigationModeGetNavigationBarHeight(): Double {
-    return NavigationModeModule(reactApplicationContext).getNavigationBarHeight()
-  }
+    override fun navigationModeGetNavigationBarHeight(): Double {
+        return NavigationModeModule(reactApplicationContext).getNavigationBarHeight()
+    }
 
   companion object {
     const val NAME = "MendixNative"
