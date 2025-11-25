@@ -3,14 +3,7 @@ import Foundation
 @objcMembers
 public class MxConfiguration: NSObject {
     
-    /**
-     * Side note for 11: I've bumped the nativeBinaryVersion from 12 to 30,
-     * because there needs to be version increment space for Mx 10.24.
-     * You can remove this comment when the next version is released.
-     *
-     * Increment nativeBinaryVersion to 30 for OP-SQlite database migration
-     */
-    private static let nativeBinaryVersion: Int = 30
+    private static let nativeBinaryVersion: Int = 31
     private static let defaultDatabaseName = "default"
     private static let defaultFilesDirectoryName = "files/default"
     

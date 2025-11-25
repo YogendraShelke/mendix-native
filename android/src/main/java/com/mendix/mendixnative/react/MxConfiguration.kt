@@ -56,15 +56,7 @@ class MxConfiguration(val reactContext: ReactApplicationContext) {
   }
 
   companion object {
-    /**
-     * Side note for 11: I've bumped the nativeBinaryVersion from 12 to 30,
-     * because there needs to be version increment space for Mx 10.24.
-     * You can remove this comment when the next version is released.
-     *
-     *
-     * Increment nativeBinaryVersion to 30 for OP-SQlite database migration
-     */
-    const val NATIVE_BINARY_VERSION: Int = 30
+    const val NATIVE_BINARY_VERSION: Int = 31
     const val NAME: String = "MxConfiguration"
     var defaultDatabaseName: String = "default"
 
