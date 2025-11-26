@@ -2,11 +2,8 @@ package com.mendix.mendixnative.react
 
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
 
-class NavigationModeModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+class NavigationModeModule(val context: ReactApplicationContext) {
 
     companion object {
         const val TAG = "NavigationModeModule"
@@ -15,13 +12,9 @@ class NavigationModeModule(reactContext: ReactApplicationContext) :
         const val NAVIGATION_BAR_INTERACTION_MODE_GESTURE = 2
     }
 
-    override fun getName(): String = "NavigationMode"
-
-    @ReactMethod(isBlockingSynchronousMethod = true)
     fun isNavigationBarActive(): Boolean {
         Log.d(TAG, "=== isNavigationBarActive called (sync) ===")
         return try {
-            val context = reactApplicationContext
             Log.d(TAG, "Context: $context")
 
             val resources = context.resources
@@ -60,11 +53,9 @@ class NavigationModeModule(reactContext: ReactApplicationContext) :
         }
     }
 
-    @ReactMethod(isBlockingSynchronousMethod = true)
     fun getNavigationBarHeight(): Double {
         Log.d(TAG, "=== getNavigationBarHeight called (sync) ===")
         return try {
-            val context = reactApplicationContext
             val resources = context.resources
 
             val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
