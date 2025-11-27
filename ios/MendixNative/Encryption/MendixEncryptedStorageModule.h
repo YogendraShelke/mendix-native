@@ -24,5 +24,6 @@
 @end
 
 @interface MendixEncryptedStorageModule (Private)
++(BOOL) ensureBackendAvailableWithRejecter:(RCTPromiseRejectBlock)reject;
 -(void) rejectPromise:(NSString *) message error:(NSError *)error reject:(RCTPromiseRejectBlock) rejecter;
 @end

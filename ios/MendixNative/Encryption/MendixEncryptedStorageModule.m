@@ -29,13 +29,13 @@
     return NO;
 }
 
-- (BOOL)ensureBackendAvailableWithRejecter:(RCTPromiseRejectBlock)reject {
-    EncryptedStorageModule *backend = [EncryptedStorageModule sharedInstance];
++ (BOOL)ensureBackendAvailableWithRejecter:(RCTPromiseRejectBlock)reject {
+  MendixEncryptedStorageModule *backend = [MendixEncryptedStorageModule sharedInstance];
     if (!backend) {
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                             code:-1
                                             userInfo:@{ NSLocalizedDescriptionKey : @"EncryptedStorageModule backend unavailable" }];
-        [self rejectPromise:@"Backend instance not available" error:error reject:reject];
+        [backend rejectPromise:@"Backend instance not available" error:error reject:reject];
         return NO;
     }
     return YES;
@@ -57,7 +57,7 @@ RCT_EXPORT_METHOD(setItem:
                   withValue:(NSString *)value
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    if (![EncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
+    if (![MendixEncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
         return;
     }
 
@@ -71,7 +71,7 @@ RCT_EXPORT_METHOD(getItem:
                   (NSString *)key
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    if (![EncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
+    if (![MendixEncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
         return;
     }
     
@@ -84,7 +84,7 @@ RCT_EXPORT_METHOD(removeItem:
                   (NSString *)key
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    if (![EncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
+    if (![MendixEncryptedStorageModule ensureBackendAvailableWithRejecter:reject]) {
         return;
     }
     
