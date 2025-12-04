@@ -11,8 +11,7 @@ pre-commit:
       glob: "package.json"
       run: |
         if git diff --cached package.json | grep -q '^\+.*"version":'; then
-          echo "❌ Error: Direct version bumps in package.json are not allowed."
-          echo "Please use the release workflow to bump versions."
+          echo "❌ Please don't edit the version manually. Version bumps are handled automatically when the package is released via the release workflow."
           exit 1
         fi
 commit-msg:
