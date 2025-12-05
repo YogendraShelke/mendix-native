@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version bump type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Bump version and update CHANGELOG
+        id: bump
+        run: |
+          NEW_VERSION=$(npm version ${{ github.event.inputs.version }} --no-git-tag-version)
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n## [$NEW_VERSION] - $(date +%Y-%m-%d)/" CHANGELOG.md
+
+      - name: Extract release notes
+        id: changelog
+        run: |
+          NOTES=$(awk '/## \[Unreleased\]/ {flag=1; next} /^## \[/ {flag=0} flag {print}' CHANGELOG.md)
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Build and pack
+        id: pack
+        run: |
+          yarn install
+          yarn prepare
+          yarn pack --filename mendix-native-${{ steps.bump.outputs.version }}.tgz
+          echo "tgz=mendix-native-${{ steps.bump.outputs.version }}.tgz" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b
+        with:
+          tag_name: ${{ steps.bump.outputs.version }}
+          name: ${{ steps.bump.outputs.version }}
+          body: ${{ steps.changelog.outputs.notes }}
+          files: ${{ steps.pack.outputs.tgz }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412
+        with:
+          commit-message: "chore: release ${{ steps.bump.outputs.version }}"
+          branch: release/${{ steps.bump.outputs.version }}
+          title: "Release ${{ steps.bump.outputs.version }}"
+          body: "This PR updates CHANGELOG.md and package.json for release ${{ steps.bump.outputs.version }}."
+          base: main
