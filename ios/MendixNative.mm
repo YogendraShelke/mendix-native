@@ -140,5 +140,14 @@ RCT_EXPORT_MODULE()
     reject(@"NOT_SPPORTED", @"Read as text is not supported on iOS", nil);
 }
 
+- (nonnull NSNumber *)navigationModeGetNavigationBarHeight { 
+    return [NSNumber numberWithBool:NO];
+}
+
+
+- (nonnull NSNumber *)navigationModeIsNavigationBarActive { 
+    return [NSNumber numberWithDouble:0.0];
+}
+
 
 @end

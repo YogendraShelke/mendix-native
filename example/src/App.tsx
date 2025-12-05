@@ -1,9 +1,13 @@
 import { Text, View, StyleSheet } from 'react-native';
+import { AndroidNavigationBar } from 'mendix-native';
 
 export default function App() {
   const runtime = (global as any).nativeFabricUIManager
     ? 'New Architecture'
     : 'Legacy Architecture';
+
+  console.log('Navigation Bar Height:', AndroidNavigationBar.height);
+  console.log('Is Navigation Bar Active:', AndroidNavigationBar.isActive);
 
   return (
     <View style={styles.container}>

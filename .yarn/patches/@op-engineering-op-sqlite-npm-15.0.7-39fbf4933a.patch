@@ -193,6 +193,18 @@ index 5e1c1de234e7bdb131769728fc862d389f9995a5..dc21c6503ffe18f3ae1cf99f327e8aa1
  void install(jsi::Runtime &rt,
               const std::shared_ptr<react::CallInvoker> &invoker,
               const char *base_path, const char *crsqlite_path,
+diff --git a/cpp/bindings.h b/cpp/bindings.h
+index 91511ab8dff0cbd34c6b8b844c1783c39d4317cb..cc73dfe4405d568cbfbbfa5a9c879a1d88f260bf 100644
+--- a/cpp/bindings.h
++++ b/cpp/bindings.h
+@@ -14,6 +14,7 @@ void install(jsi::Runtime &rt,
+              const char *base_path, const char *crsqlite_path,
+              const char *sqlite_vec_path);
+ void invalidate();
++bool deleteAllDbs();
+ void expoUpdatesWorkaround(const char *base_path);
+ 
+ } // namespace opsqlite
 diff --git a/op-sqlite.podspec b/op-sqlite.podspec
 index 375cc3ef0838a3cffb87ec970f636880a8676bb3..e6fce21630ed00aa863f2baae7b3d04de783dcb0 100644
 --- a/op-sqlite.podspec

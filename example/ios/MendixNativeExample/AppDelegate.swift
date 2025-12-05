@@ -1,43 +1,46 @@
 import UIKit
 import React
+import React_RCTAppDelegate
+import ReactAppDependencyProvider
 import MendixNative
 
 @main
-class AppDelegate: ReactAppProvider {
+class AppDelegate: RCTAppDelegate {
     
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        super.setUpProvider()
+        
+        self.moduleName = "App"
+        self.dependencyProvider = RCTAppDependencyProvider()
+        self.initialProps = [:]
         super.application(application, didFinishLaunchingWithOptions: launchOptions)
-        changeRoot(to: Home())
+        
+        //Start - For MendixApplication compatibility only, not part of React Native template
+        MxConfiguration.update(from:
+            MendixApp.init(
+                identifier: nil,
+                bundleUrl: bundleURL()!,
+                runtimeUrl: URL(string: "http://localhost:8081")!,
+                warningsFilter: .none,
+                isDeveloperApp: false,
+                clearDataAtLaunch: false,
+                splashScreenPresenter: nil,
+                reactLoading: nil,
+                enableThreeFingerGestures: false
+            )
+        )
+        //End - For MendixApplication compatibility only, not part of React Native template
         return true
     }
     
-    open override func bundleURL() -> URL? {
-        return RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    override func sourceURL(for bridge: RCTBridge) -> URL? {
+      self.bundleURL()
     }
-}
 
-class Home: UIViewController {
-    
-    lazy var button: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Open React App", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(openApp), for: .touchUpInside)
-        return button
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        view.addSubview(button)
-        NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-    
-    @objc func openApp() {
-        ReactAppProvider.shared()?.setReactViewController(UIViewController())
+    override func bundleURL() -> URL? {
+  #if DEBUG
+      RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+  #else
+      Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+  #endif
     }
 }
