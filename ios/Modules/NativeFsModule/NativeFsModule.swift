@@ -76,7 +76,10 @@ public class NativeFsModule: NSObject {
     
     static func remove(_ filepath: String) throws {
         let fileManager = FileManager.default
-        guard fileManager.fileExists(atPath: filepath) else { return }
+        guard fileManager.fileExists(atPath: filepath) else {
+            NSLog("Trying to delete non-existing file: \(filepath)")
+            return
+        }
         try fileManager.removeItem(atPath: filepath)
     }
     
