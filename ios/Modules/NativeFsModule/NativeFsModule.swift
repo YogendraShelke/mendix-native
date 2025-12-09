@@ -24,12 +24,27 @@ public class NativeFsModule: NSObject {
         return "\(String(describing: NativeFsModule.self)): \(message)"
     }
     
+    private func getBlobManager() -> RCTBlobManager? {
+        guard let blobManager: RCTBlobManager = ReactAppProvider.getModule(type: RCTBlobManager.self) else {
+            NSLog("NativeFsModule: Failed to get RCTBlobManager")
+            return nil
+        }
+        return blobManager
+    }
+    
     private func readBlobRefAsData(_ blob: [String: Any]) -> Data? {
-        return RCTBlobManager().resolve(blob)
+        guard let data = getBlobManager()?.resolve(blob) else {
+            NSLog("NativeFsModule: Failed to resolve blob")
+            return nil
+        }
+        return data
     }
     
     private func readDataAsBlobRef(_ data: Data) -> [String: Any]? {
-        let blobId = RCTBlobManager().store(data)
+        guard let blobId = getBlobManager()?.store(data) else {
+            NSLog("NativeFsModule: Failed to store data as blob")
+            return nil
+        }
         return [
             "blobId": blobId as Any,
             "offset": 0,
