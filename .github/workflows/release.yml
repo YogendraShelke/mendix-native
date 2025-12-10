@@ -30,21 +30,10 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
+          cache: 'yarn'
 
       - name: Enable corepack
         run: corepack enable
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      - name: Cache yarn dependencies
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Extract release notes from Unreleased section
         id: changelog
@@ -69,7 +58,7 @@ jobs:
       - name: Build and pack
         id: pack
         run: |
-          yarn install
+          yarn install --immutable
           yarn prepare
           yarn pack --filename mendix-native-${{ steps.bump.outputs.version }}.tgz
           echo "tgz=mendix-native-${{ steps.bump.outputs.version }}.tgz" >> $GITHUB_OUTPUT
