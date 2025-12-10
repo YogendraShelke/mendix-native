@@ -34,6 +34,19 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
+      - name: Extract release notes from Unreleased section
+        id: changelog
+        run: |
+          NOTES=$(awk '/## \[Unreleased\]/ {flag=1; next} /^## \[/ {flag=0} flag && NF {print}' CHANGELOG.md)
+          if [ -z "$NOTES" ] || [ -z "$(echo "$NOTES" | tr -d '[:space:]')" ]; then
+            echo "Error: No release notes found in the [Unreleased] section of CHANGELOG.md"
+            echo "Please add release notes before creating a release."
+            exit 1
+          fi
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Bump version and update CHANGELOG
         id: bump
         run: |
@@ -41,19 +54,12 @@ jobs:
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n## [$NEW_VERSION] - $(date +%Y-%m-%d)/" CHANGELOG.md
 
-      - name: Extract release notes
-        id: changelog
-        run: |
-          NOTES=$(awk '/## \[Unreleased\]/ {flag=1; next} /^## \[/ {flag=0} flag {print}' CHANGELOG.md)
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$NOTES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
       - name: Build and pack
         id: pack
         run: |
           yarn install
           yarn prepare
+          yarn example pod
           yarn pack --filename mendix-native-${{ steps.bump.outputs.version }}.tgz
           echo "tgz=mendix-native-${{ steps.bump.outputs.version }}.tgz" >> $GITHUB_OUTPUT
 
