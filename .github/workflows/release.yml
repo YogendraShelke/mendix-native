@@ -64,6 +64,14 @@ jobs:
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n## [$NEW_VERSION] - $(date +%Y-%m-%d)/" CHANGELOG.md
 
+      - name: Check if release already exists
+        run: |
+          if git ls-remote --tags origin | grep -q "refs/tags/${{ steps.bump.outputs.version }}$"; then
+            echo "Error: Release tag ${{ steps.bump.outputs.version }} already exists"
+            echo "Please check existing releases or use a different version bump type."
+            exit 1
+          fi
+
       - name: Build and pack
         id: pack
         run: |
