@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Update cache
+
 ## [v0.3.2] - 2025-12-10
 
 - We added yarn caching
